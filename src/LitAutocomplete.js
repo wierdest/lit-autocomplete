@@ -30,15 +30,17 @@ export class LitAutocomplete extends LitElement {
         transition: background-color 0.2s, box-shadow 0.2s;
       }
 
-      .autoCompleteItem:hover {
-        background-color: #f0f0f0;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-      }
+      .autoCompleteItem:hover,
+      .autoCompleteItem.selected {
+      background-color: #f0f0f0;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
     `
   static properties = {
     value: { type: String },
     options: { type: Array },
-    filteredOptions: { type: Array }
+    filteredOptions: { type: Array },
+    selected: { type: Number }
 
   }
 
@@ -47,15 +49,17 @@ export class LitAutocomplete extends LitElement {
     this.value = ''
     this.options = []
     this.filteredOptions = []
+    this.selected = -1
   }
 
-  handleInput (event) {
-    this.value = event.target.value.toLowerCase()
+  handleInput (e) {
+    this.value = e.target.value.toLowerCase()
     if (this.value === '') {
       this.filteredOptions = []
     } else {
       this.filteredOptions = this.options.filter(option => option.toLowerCase().includes(this.value))
     }
+    this.selected = -1
     this.requestUpdate()
   }
 
@@ -65,20 +69,42 @@ export class LitAutocomplete extends LitElement {
     this.requestUpdate()
   }
 
+  handleKeydown (e) {
+    if (e.key === 'ArrowDown') {
+      if (this.selected < this.filteredOptions.length -1) {
+        this.selected++
+      } else {
+        this.selected = 0
+      }
+      this.requestUpdate()
+    } else if (e.key === 'ArrowUp') {
+      if (this.selected > 0) {
+        this.selected--
+      } else {
+        this.selected = this.filteredOptions.length - 1
+      }
+    } else if (e.key === 'Enter' && this.selected >= 0) {
+      this.handleClick(this.filteredOptions[this.selected])
+      e.preventDefault()
+    }
+  }
+
   render () {
     return html`
       <input
         type="text"
         .value="${this.value}"
         @input="${this.handleInput}"
+        @keydown="${this.handleKeydown}"
         placeholder="Digite aqui..."
       />
       ${this.filteredOptions.length > 0
       ? html`
           <ul class="autoCompleteList">
             ${this.filteredOptions.map(
-              option => html`
-                <li class="autoCompleteItem" @click="${() => this.handleClick(option)}">
+              (option, index) => html`
+                <li class="autoCompleteItem ${index === this.selected ? 'selected' : ''}" 
+                @click="${() => this.handleClick(option)}">
                   ${option}
                 </li>
               `
