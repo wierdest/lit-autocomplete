@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <style>
+    body {
+      background: #fafafa;
+    }
+    #demo {
+      max-width: 200px;
+      margin: 50px auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="demo"></div>
+
+  <script type="module">
+    import { html, render } from 'lit';
+    import '../lit-autocomplete.js';
+    const cidades = [
+      'São Paulo', 'Campo Grande', 'Corumbá', 'Belo Horizonte', 'Belém', 'João Pessoa',
+      'Curitiba', 'Recife', 'Teresina', 'Rio de Janeiro', 'Natal', 
+    ];
+    render(
+      html`
+        <lit-autocomplete  .options=${cidades}>
+        </lit-autocomplete>
+      `,
+      document.querySelector('#demo')
+    );
+  </script>
+</body>
+</html>
