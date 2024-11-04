@@ -5,9 +5,18 @@ This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) reco
 Removi prettier e adicionei conformidade ao standard.
 
 ## Description
+
+# EM CONSTRUÇÃO!!!
 Elemento Lit de input de texto com autocomplete.
 O componente recebe um string[], options, que usa para o autocomplete.
-O componente tem 100% de cobertura de testes.
+O componente pode ser controlado pelas setas do teclado (acessibilidade)
+
+A fazer:
+** esc cancela a escolha
+** adicionar aria 
+** testes unitários para a keydown
+
+O objetivo é ao final ter 100% de cobertura de testes.
 
 ## Usage
 
