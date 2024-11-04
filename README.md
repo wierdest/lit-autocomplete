@@ -2,21 +2,30 @@
 
 This webcomponent follows the [open-wc](https://github.com/open-wc/open-wc) recommendation.
 
-## Installation
+Removi prettier e adicionei conformidade ao standard.
 
-```bash
-npm i lit-autocomplete
-```
+## Description
+Elemento Lit de input de texto com autocomplete.
+O componente recebe um string[], options, que usa para o autocomplete.
+O componente tem 100% de cobertura de testes.
 
 ## Usage
 
 ```html
 <script type="module">
-  import 'lit-autocomplete/lit-autocomplete.js';
+  import 'lit-autocomplete .options=${yourStringArrayOfOptions} /lit-autocomplete.js';
 </script>
 
 <lit-autocomplete></lit-autocomplete>
 ```
+
+## Local Demo with `web-dev-server`
+
+```bash
+npm run start
+```
+
+To run a local development server that serves the basic demo located in `demo/index.html`
 
 ## Testing with Web Test Runner
 
@@ -39,10 +48,4 @@ For most of the tools, the configuration is in the `package.json` to minimize th
 
 If you customize the configuration a lot, you can consider moving them to individual files.
 
-## Local Demo with `web-dev-server`
 
-```bash
-npm start
-```
-
-To run a local development server that serves the basic demo located in `demo/index.html`
