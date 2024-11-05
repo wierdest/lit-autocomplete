@@ -6,17 +6,17 @@ Removi prettier e adicionei conformidade ao standard.
 
 ## Description
 
-# EM CONSTRUÇÃO!!!
+![GIF mostrando um componente de input com autocomplete](./lit-autocomplete.gif)
+
 Elemento Lit de input de texto com autocomplete.
 O componente recebe um string[], options, que usa para o autocomplete.
 O componente pode ser controlado pelas setas do teclado (acessibilidade)
+O componente tem 100% de testes unitários
 
-A fazer:
-** esc cancela a escolha
-** adicionar aria 
-** testes unitários para a keydown
+## A fazer:
+### esc cancela a escolha
+### adicionar aria para accessibilidade
 
-O objetivo é ao final ter 100% de cobertura de testes.
 
 ## Usage
 
@@ -44,13 +44,11 @@ To execute a single test run:
 ```bash
 npm run test
 ```
-
 To run the tests in interactive watch mode run:
 
 ```bash
 npm run test:watch
 ```
-
 
 ## Tooling configs
 
