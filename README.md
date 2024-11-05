@@ -8,10 +8,10 @@ Removi prettier e adicionei conformidade ao standard.
 
 ![GIF mostrando um componente de input com autocomplete](./lit-autocomplete.gif)
 
-Elemento Lit de input de texto com autocomplete.
-O componente recebe um string[], options, que usa para o autocomplete.
-O componente pode ser controlado pelas setas do teclado (acessibilidade)
-O componente tem 100% de testes unitários
+Elemento Lit de input de texto com autocomplete. <br/>
+O componente recebe um string[], options, que usa para o autocomplete. <br/>
+O componente pode ser controlado pelas setas do teclado (acessibilidade) <br/>
+O componente tem 100% de testes unitários <br/>
 
 ## A fazer:
 ### esc cancela a escolha
