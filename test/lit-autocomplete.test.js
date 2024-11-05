@@ -11,7 +11,7 @@ describe('LitAutocomplete', () => {
   beforeEach(async () => {
     el = await fixture(html`<lit-autocomplete .options=${mockAutocompleteOptions}></lit-autocomplete>`)
   })
-  it('exists', async () => {
+  it('exists', () => {
     expect(el).to.exist
   })
 
@@ -21,7 +21,7 @@ describe('LitAutocomplete', () => {
     expect(override.options).to.deep.equal(newOptions)
   })
 
-  it('should handle input and return autocomplete options that match', async () => {
+  it('should handle input and return autocomplete options that match', () => {
     // I'm getting the hang of this!! :)
     const mockEvent = { target: { value: 'i' } }
     const result = ['kitten']
@@ -40,5 +40,42 @@ describe('LitAutocomplete', () => {
     el.handleClick(option)
     expect(el.filteredOptions).to.be.empty
     expect(el.value).to.equal(option)
+  })
+
+  it('should control the selected value using keyboard arrows and confirm selection via enter key', () => {
+    expect(el.selected).to.equal(-1)
+    const mockInputEvent = { target: { value: 'a' } }
+    el.handleInput(mockInputEvent)
+    expect(el.filteredOptions.length).to.equal(2)
+    let mockEvent = { key: 'ArrowDown', preventDefault: () => {} }
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(0)
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(1)
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(0)
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(1)
+    mockEvent = { key: 'ArrowUp', preventDefault: () => {} }
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(0)
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(el.filteredOptions.length - 1)
+    mockEvent = { key: 'Enter', preventDefault: () => {} }
+    el.handleKeydown(mockEvent)
+    expect(el.value).to.equal('calf')
+  })
+
+  it('autoCompleteItem should have a selected className if selected', async () => {
+    const mockInputEvent = { target: { value: 'i' } }
+    el.handleInput(mockInputEvent)
+
+    await el.updateComplete
+
+    expect(el.filteredOptions.length).to.equal(1)
+    const mockSelect = { key: 'ArrowDown' }
+    el.handleKeydown(mockSelect)
+    const autoCompleteItem = el.renderRoot.querySelector('.autoCompleteItem')
+    expect(autoCompleteItem).to.exist
   })
 })
