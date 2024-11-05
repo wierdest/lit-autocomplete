@@ -71,11 +71,12 @@ export class LitAutocomplete extends LitElement {
 
   handleKeydown (e) {
     if (e.key === 'ArrowDown') {
-      if (this.selected < this.filteredOptions.length -1) {
+      if (this.selected < this.filteredOptions.length - 1) {
         this.selected++
       } else {
         this.selected = 0
       }
+      this.value = this.filteredOptions[this.selected]
       this.requestUpdate()
     } else if (e.key === 'ArrowUp') {
       if (this.selected > 0) {
@@ -83,6 +84,7 @@ export class LitAutocomplete extends LitElement {
       } else {
         this.selected = this.filteredOptions.length - 1
       }
+      this.value = this.filteredOptions[this.selected]
     } else if (e.key === 'Enter' && this.selected >= 0) {
       this.handleClick(this.filteredOptions[this.selected])
       e.preventDefault()

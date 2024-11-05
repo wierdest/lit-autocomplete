@@ -16,6 +16,7 @@ O componente tem 100% de testes unitários <br/>
 ## A fazer:
 ### esc cancela a escolha
 ### adicionar aria para accessibilidade
+### keydown completa valor
 
 
 ## Usage
