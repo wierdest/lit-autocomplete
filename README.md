@@ -31,6 +31,7 @@ O objetivo é ao final ter 100% de cobertura de testes.
 ## Local Demo with `web-dev-server`
 
 ```bash
+npm i
 npm run start
 ```
 
