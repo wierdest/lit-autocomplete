@@ -41,7 +41,6 @@ export class LitAutocomplete extends LitElement {
     options: { type: Array },
     filteredOptions: { type: Array },
     selected: { type: Number }
-
   }
 
   constructor () {
@@ -50,6 +49,7 @@ export class LitAutocomplete extends LitElement {
     this.options = []
     this.filteredOptions = []
     this.selected = -1
+    this.listElement = undefined
   }
 
   handleInput (e) {
@@ -69,6 +69,15 @@ export class LitAutocomplete extends LitElement {
     this.requestUpdate()
   }
 
+  _findListElement () {
+    if (this.listElement) {
+      return this.listElement
+    } else {
+      this.listElement = this.renderRoot.querySelector('.autoCompleteList')
+    }
+    return this.listElement
+  }
+
   handleKeydown (e) {
     if (e.key === 'ArrowDown') {
       if (this.selected < this.filteredOptions.length - 1) {
@@ -77,6 +86,9 @@ export class LitAutocomplete extends LitElement {
         this.selected = 0
       }
       this.value = this.filteredOptions[this.selected]
+      const list = this._findListElement()
+      const item = list.children[this.selected]
+      list.scrollTop += (item.getBoundingClientRect().top - item.clientHeight) - list.clientHeight
       this.requestUpdate()
     } else if (e.key === 'ArrowUp') {
       if (this.selected > 0) {
@@ -85,6 +97,10 @@ export class LitAutocomplete extends LitElement {
         this.selected = this.filteredOptions.length - 1
       }
       this.value = this.filteredOptions[this.selected]
+      const list = this._findListElement()
+      const item = list.children[this.selected]
+      list.scrollTop += (item.getBoundingClientRect().top - item.clientHeight) - list.clientHeight
+      this.requestUpdate()
     } else if (e.key === 'Enter' && this.selected >= 0) {
       this.handleClick(this.filteredOptions[this.selected])
       e.preventDefault()
