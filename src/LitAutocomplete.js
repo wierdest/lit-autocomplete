@@ -78,6 +78,12 @@ export class LitAutocomplete extends LitElement {
     return this.listElement
   }
 
+  _scrollListElement () {
+    const list = this._findListElement()
+    const item = list.children[this.selected]
+    list.scrollTop += (item.getBoundingClientRect().top - item.clientHeight) - list.clientHeight
+  }
+
   handleKeydown (e) {
     if (e.key === 'ArrowDown') {
       if (this.selected < this.filteredOptions.length - 1) {
@@ -86,9 +92,7 @@ export class LitAutocomplete extends LitElement {
         this.selected = 0
       }
       this.value = this.filteredOptions[this.selected]
-      const list = this._findListElement()
-      const item = list.children[this.selected]
-      list.scrollTop += (item.getBoundingClientRect().top - item.clientHeight) - list.clientHeight
+      this._scrollListElement()
       this.requestUpdate()
     } else if (e.key === 'ArrowUp') {
       if (this.selected > 0) {
@@ -97,9 +101,7 @@ export class LitAutocomplete extends LitElement {
         this.selected = this.filteredOptions.length - 1
       }
       this.value = this.filteredOptions[this.selected]
-      const list = this._findListElement()
-      const item = list.children[this.selected]
-      list.scrollTop += (item.getBoundingClientRect().top - item.clientHeight) - list.clientHeight
+      this._scrollListElement()
       this.requestUpdate()
     } else if (e.key === 'Enter' && this.selected >= 0) {
       this.handleClick(this.filteredOptions[this.selected])

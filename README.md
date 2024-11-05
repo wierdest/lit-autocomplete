@@ -16,17 +16,15 @@ O componente tem 100% de testes unitários <br/>
 ## A fazer:
 ### esc cancela a escolha
 ### adicionar aria para accessibilidade
-### keydown completa valor
-
 
 ## Usage
 
 ```html
 <script type="module">
-  import 'lit-autocomplete .options=${yourStringArrayOfOptions} /lit-autocomplete.js';
+  import './lit-autocomplete.js';
 </script>
 
-<lit-autocomplete></lit-autocomplete>
+<lit-autocomplete .options=${yourStringArrayOfOptions}> </lit-autocomplete>
 ```
 
 ## Local Demo with `web-dev-server`

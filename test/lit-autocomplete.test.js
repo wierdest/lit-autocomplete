@@ -42,11 +42,16 @@ describe('LitAutocomplete', () => {
     expect(el.value).to.equal(option)
   })
 
-  it('should control the selected value using keyboard arrows and confirm selection via enter key', () => {
+  it('should control the selected value using keyboard arrows and confirm selection via enter key', async () => {
     expect(el.selected).to.equal(-1)
     const mockInputEvent = { target: { value: 'a' } }
     el.handleInput(mockInputEvent)
+
+    await el.updateComplete
+
     expect(el.filteredOptions.length).to.equal(2)
+    el.listElement = el._findListElement()
+    expect(el.listElement).to.exist
     let mockEvent = { key: 'ArrowDown', preventDefault: () => {} }
     el.handleKeydown(mockEvent)
     expect(el.selected).to.equal(0)
@@ -71,6 +76,8 @@ describe('LitAutocomplete', () => {
     el.handleInput(mockInputEvent)
 
     await el.updateComplete
+
+    el.listElement = el._findListElement()
 
     expect(el.filteredOptions.length).to.equal(1)
     const mockSelect = { key: 'ArrowDown' }
