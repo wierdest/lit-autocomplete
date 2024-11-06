@@ -43,13 +43,11 @@ export class LitAutocompleteList extends LitElement {
 
   connectedCallback () {
     super.connectedCallback()
-    console.log('LIST CONNECTED')
     window.addEventListener('mousedown', this._boundTrackMouseDown)
   }
 
   disconnectedCallback () {
     super.disconnectedCallback()
-    console.log('LIST DISCONNECTED')
     window.removeEventListener('mousedown', this._boundTrackMouseDown)
   }
 
