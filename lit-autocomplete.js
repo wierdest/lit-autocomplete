@@ -1,3 +1,3 @@
-import { LitAutocomplete } from './src/LitAutocomplete.js';
+import { LitAutocomplete } from './src/LitAutocomplete.js'
 
-window.customElements.define('lit-autocomplete', LitAutocomplete);
+window.customElements.define('lit-autocomplete', LitAutocomplete)

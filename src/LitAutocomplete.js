@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit'
-
+import '../lit-autocompletelist'
 export class LitAutocomplete extends LitElement {
   static styles = css`
       :host {
@@ -39,8 +39,7 @@ export class LitAutocomplete extends LitElement {
   static properties = {
     options: { type: Array },
     value: { type: String },
-    filteredOptions: { type: Array },
-    selected: { type: Number }
+    filteredOptions: { type: Array }
   }
 
   constructor () {
@@ -48,85 +47,47 @@ export class LitAutocomplete extends LitElement {
     this.value = ''
     this.options = []
     this.filteredOptions = []
-    this.selected = -1
-    this.listElement = undefined
-    this.mouseX = 0
-    this.mouseY = 0
-  }
-
-  connectedCallback () {
-    super.connectedCallback()
-    window.addEventListener('mousedown', this._trackMouseDown.bind(this))
-  }
-
-  disconnectedCallback () {
-    super.disconnectedCallback()
-    window.removeEventListener('mousedown', this._trackMouseDown)
-  }
-
-  _trackMouseDown (e) {
-    this.mouseX = e.clientX
-    this.mouseY = e.clientY
-    this.listElement = this.renderRoot.querySelector('.autoCompleteList')
-    if (this.listElement) {
-      const listRect = this.listElement.getBoundingClientRect()
-      const isInsideList =
-      this.mouseX >= listRect.left && this.mouseX <= listRect.right &&
-      this.mouseY >= listRect.top && this.mouseY <= listRect.bottom
-      if (!isInsideList) {
-        this.filteredOptions = []
-        if (this.options.indexOf(this.value) === -1) {
-          this.value = ''
-        }
-      }
-    }
   }
 
   handleInput (e) {
-    this.value = e.target.value.toLowerCase()
-    if (this.value === '') {
+    const query = e.target.value.toLowerCase()
+    if (query === '') {
       this.filteredOptions = []
     } else {
-      this.filteredOptions = this.options.filter(option => option.toLowerCase().includes(this.value))
+      this.filteredOptions = this.options.filter(option => option.toLowerCase().includes(query))
     }
-    this.selected = -1
+    console.log(this.options)
+    this.value = e.target.value
   }
 
-  handleClick (option) {
-    this.value = option
+  handleOptionSelected (e) {
+    this.value = e.detail.option
     this.filteredOptions = []
   }
 
-  _scrollList () {
-    const item = this.listElement.children[this.selected]
-    this.listElement.scrollTop = 0
-    this.listElement.scrollTop += (item.getBoundingClientRect().top - item.clientHeight) - this.listElement.clientHeight
-  }
-
   handleKeydown (e) {
-    if (!this.listElement) {
-      this.listElement = this.renderRoot.querySelector('.autoCompleteList')
-    }
-    if (e.key === 'ArrowDown' && this.filteredOptions.length > 0) {
-      if (this.selected < this.filteredOptions.length - 1) {
-        this.selected++
-      } else {
-        this.selected = 0
+    if (this.filteredOptions.length > 0) {
+      if (e.key === 'ArrowDown') {
+        if (this.selected < this.filteredOptions.length - 1) {
+          this.selected++
+        } else {
+          this.selected = 0
+        }
+        this.value = this.filteredOptions[this.selected]
+        this.requestUpdate()
+      } else if (e.key === 'ArrowUp' && this.filteredOptions.length > 0) {
+        if (this.selected > 0) {
+          this.selected--
+        } else {
+          this.selected = this.filteredOptions.length - 1
+        }
+        this.value = this.filteredOptions[this.selected]
+        this.requestUpdate()
+      } else if ((e.key === 'Enter' || e.key === 'Tab') && this.selected >= 0) {
+        this.value = this.filteredOptions[this.selected]
+        this.filteredOptions = []
+        this.requestUpdate()
       }
-      this.value = this.filteredOptions[this.selected]
-      this._scrollList()
-      this.requestUpdate()
-    } else if (e.key === 'ArrowUp' && this.filteredOptions.length > 0) {
-      if (this.selected > 0) {
-        this.selected--
-      } else {
-        this.selected = this.filteredOptions.length - 1
-      }
-      this.value = this.filteredOptions[this.selected]
-      this._scrollList()
-      this.requestUpdate()
-    } else if ((e.key === 'Enter' || e.key === 'Tab') && this.selected >= 0) {
-      this.handleClick(this.filteredOptions[this.selected])
     }
   }
 
@@ -140,19 +101,14 @@ export class LitAutocomplete extends LitElement {
         placeholder="Digite aqui..."
       />
       ${this.filteredOptions.length > 0
-      ? html`
-          <ul class="autoCompleteList">
-            ${this.filteredOptions.map(
-              (option, index) => html`
-                <li class="autoCompleteItem ${index === this.selected ? 'selected' : ''}" 
-                @click="${() => this.handleClick(option)}">
-                  ${option}
-                </li>
-              `
-            )}
-          </ul>
-        `
-      : ''}
+        ? html`
+            <lit-autocomplete-list
+              .options="${this.filteredOptions}"
+              .selected="${this.selected}"
+              @option-selected="${this.handleOptionSelected}"
+            ></lit-autocomplete-list>
+          `
+        : ''}
     `
   }
 }
