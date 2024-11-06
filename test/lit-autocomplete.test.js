@@ -50,7 +50,7 @@ describe('LitAutocomplete', () => {
     await el.updateComplete
 
     expect(el.filteredOptions.length).to.equal(2)
-    el.listElement = el._findListElement()
+    el._findListElement()
     expect(el.listElement).to.exist
     let mockEvent = { key: 'ArrowDown', preventDefault: () => {} }
     el.handleKeydown(mockEvent)
@@ -77,7 +77,7 @@ describe('LitAutocomplete', () => {
 
     await el.updateComplete
 
-    el.listElement = el._findListElement()
+    el._findListElement()
 
     expect(el.filteredOptions.length).to.equal(1)
     const mockSelect = { key: 'ArrowDown' }

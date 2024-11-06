@@ -37,8 +37,8 @@ export class LitAutocomplete extends LitElement {
     }
     `
   static properties = {
-    value: { type: String },
     options: { type: Array },
+    value: { type: String },
     filteredOptions: { type: Array },
     selected: { type: Number }
   }
@@ -50,6 +50,37 @@ export class LitAutocomplete extends LitElement {
     this.filteredOptions = []
     this.selected = -1
     this.listElement = undefined
+    this.mouseX = 0
+    this.mouseY = 0
+  }
+
+  connectedCallback () {
+    super.connectedCallback()
+    window.addEventListener('mousedown', this._trackMouseDown.bind(this))
+  }
+
+  disconnectedCallback () {
+    super.disconnectedCallback()
+    window.removeEventListener('mousedown', this._trackMouseDown)
+  }
+
+  _trackMouseDown (e) {
+    this.mouseX = e.clientX
+    this.mouseY = e.clientY
+    this.listElement = this.renderRoot.querySelector('.autoCompleteList')
+    if (this.listElement) {
+      const listRect = this.listElement.getBoundingClientRect()
+      const isInsideList =
+      this.mouseX >= listRect.left && this.mouseX <= listRect.right &&
+      this.mouseY >= listRect.top && this.mouseY <= listRect.bottom
+      if (!isInsideList) {
+        console.log('NOT IN LIST')
+        this.filteredOptions = []
+        this.value = ''
+      } else {
+        console.log('INSIDE LIST')
+      }
+    }
   }
 
   handleInput (e) {
@@ -60,52 +91,43 @@ export class LitAutocomplete extends LitElement {
       this.filteredOptions = this.options.filter(option => option.toLowerCase().includes(this.value))
     }
     this.selected = -1
-    this.requestUpdate()
   }
 
   handleClick (option) {
     this.value = option
     this.filteredOptions = []
-    this.requestUpdate()
   }
 
-  _findListElement () {
-    if (this.listElement) {
-      return this.listElement
-    } else {
-      this.listElement = this.renderRoot.querySelector('.autoCompleteList')
-    }
-    return this.listElement
-  }
-
-  _scrollListElement () {
-    const list = this._findListElement()
-    const item = list.children[this.selected]
-    list.scrollTop += (item.getBoundingClientRect().top - item.clientHeight) - list.clientHeight
+  _scrollList () {
+    const item = this.listElement.children[this.selected]
+    this.listElement.scrollTop = 0
+    this.listElement.scrollTop += (item.getBoundingClientRect().top - item.clientHeight) - this.listElement.clientHeight
   }
 
   handleKeydown (e) {
-    if (e.key === 'ArrowDown') {
+    if (!this.listElement) {
+      this.listElement = this.renderRoot.querySelector('.autoCompleteList')
+    }
+    if (e.key === 'ArrowDown' && this.filteredOptions.length > 0) {
       if (this.selected < this.filteredOptions.length - 1) {
         this.selected++
       } else {
         this.selected = 0
       }
       this.value = this.filteredOptions[this.selected]
-      this._scrollListElement()
+      this._scrollList()
       this.requestUpdate()
-    } else if (e.key === 'ArrowUp') {
+    } else if (e.key === 'ArrowUp' && this.filteredOptions.length > 0) {
       if (this.selected > 0) {
         this.selected--
       } else {
         this.selected = this.filteredOptions.length - 1
       }
       this.value = this.filteredOptions[this.selected]
-      this._scrollListElement()
+      this._scrollList()
       this.requestUpdate()
-    } else if (e.key === 'Enter' && this.selected >= 0) {
+    } else if ((e.key === 'Enter' || e.key === 'Tab') && this.selected >= 0) {
       this.handleClick(this.filteredOptions[this.selected])
-      e.preventDefault()
     }
   }
 
