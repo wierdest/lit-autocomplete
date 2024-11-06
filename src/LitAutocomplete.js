@@ -74,11 +74,10 @@ export class LitAutocomplete extends LitElement {
       this.mouseX >= listRect.left && this.mouseX <= listRect.right &&
       this.mouseY >= listRect.top && this.mouseY <= listRect.bottom
       if (!isInsideList) {
-        console.log('NOT IN LIST')
         this.filteredOptions = []
-        this.value = ''
-      } else {
-        console.log('INSIDE LIST')
+        if (this.options.indexOf(this.value) === -1) {
+          this.value = ''
+        }
       }
     }
   }
