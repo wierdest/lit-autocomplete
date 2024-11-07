@@ -1,5 +1,5 @@
 import { html, css, LitElement } from 'lit'
-import '../lit-autocompletelist'
+import '../lit-autocomplete-list'
 export class LitAutocomplete extends LitElement {
   static styles = css`
       :host {
