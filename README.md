@@ -8,14 +8,16 @@ Removi prettier e adicionei conformidade ao standard.
 
 ![GIF mostrando um componente de input com autocomplete](./lit-autocomplete.gif)
 
-Elemento Lit de input de texto com autocomplete. <br/>
-O componente recebe um string[], options, que usa para o autocomplete. <br/>
+Elemento Lit para o comportamento de autocomplete. <br/>
+O componente recebe um string[], options, que usa para alimentar LitAutocompleteList. <br/>
+O componente recebe um input (slotted)
 O componente pode ser controlado pelas setas do teclado (acessibilidade) <br/>
-O componente tem 100% de testes unitários <br/>
+O componente visa 100% de testes unitários ** em andamento, desde o desacoplamento ainda não trabalhei na atualização dos testes ** <br/>
 
-## A fazer:
-### esc cancela a escolha
-### adicionar aria para accessibilidade
+## Challenges
+O principal desafio foi o desacoplamento do elemento input do elemento lista <br>
+Para completar, a decisão de passar um input no slot vem para tentar tornar o componente reutilizável em mais contextos <br>
+
 
 ## Usage
 
@@ -24,7 +26,9 @@ O componente tem 100% de testes unitários <br/>
   import './lit-autocomplete.js';
 </script>
 
-<lit-autocomplete .options=${yourStringArrayOfOptions}> </lit-autocomplete>
+<lit-autocomplete .options=${yourStringArrayOfOptions}> 
+    <input slot="input" type="text" placeholder="Digite aqui..." />
+</lit-autocomplete>
 ```
 
 ## Local Demo with `web-dev-server`

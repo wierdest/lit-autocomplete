@@ -11,29 +11,6 @@ export class LitAutocomplete extends LitElement {
       width: 100%;
       box-sizing: border-box;
       } 
-      .autoCompleteList {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        border: 1px solid #ccc;
-        max-height: 150px;
-        overflow-y: auto;
-        width: 100%
-      }
-
-      .autoCompleteItem {
-        padding: 8px;
-        cursor: pointer;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.2s, box-shadow 0.2s;
-      }
-
-      .autoCompleteItem:hover,
-      .autoCompleteItem.selected {
-      background-color: #f0f0f0;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
     `
   static properties = {
     options: { type: Array },
