@@ -60,9 +60,6 @@ export class LitAutocompleteList extends LitElement {
       this.mouseY >= this.boundingRect.top && this.mouseY <= this.boundingRect.bottom
     if (!isInsideList) {
       this.handleClick('')
-      console.log('clicked outside')
-    } else {
-      console.log('clicked inside')
     }
   }
 

@@ -7,11 +7,10 @@ export class LitAutocomplete extends LitElement {
         padding: 25px;
         color: var(--lit-autocomplete-text-color, #000);
       }
-      input {
-        width: 100%;
-        box-sizing: border-box
-      }
-
+      ::slotted(input) {
+      width: 100%;
+      box-sizing: border-box;
+      } 
       .autoCompleteList {
         list-style-type: none;
         padding: 0;
@@ -47,22 +46,42 @@ export class LitAutocomplete extends LitElement {
     this.value = ''
     this.options = []
     this.filteredOptions = []
+    this._boundHandleInput = this.handleInput.bind(this)
+    this._boundHandleKeydown = this.handleKeydown.bind(this)
+  }
+
+  firstUpdated () {
+    const input = this.renderRoot.querySelector('slot[name="input"]')
+    if (input) {
+      input.addEventListener('input', this._boundHandleInput)
+      input.addEventListener('keydown', this._boundHandleKeydown)
+    }
+  }
+
+  _updateSlottedInputValue (value) {
+    const slot = this.renderRoot.querySelector('slot[name="input"]')
+    const slottedInput = slot.assignedElements()[0]
+    if (slottedInput) {
+      slottedInput.value = value
+    }
   }
 
   handleInput (e) {
     const query = e.target.value.toLowerCase()
     if (query === '') {
       this.filteredOptions = []
+      this.selected = -1
     } else {
       this.filteredOptions = this.options.filter(option => option.toLowerCase().includes(query))
     }
-    console.log(this.options)
     this.value = e.target.value
   }
 
   handleOptionSelected (e) {
     this.value = e.detail.option
     this.filteredOptions = []
+    this.selected = -1
+    this._updateSlottedInputValue(this.value)
   }
 
   handleKeydown (e) {
@@ -74,7 +93,7 @@ export class LitAutocomplete extends LitElement {
           this.selected = 0
         }
         this.value = this.filteredOptions[this.selected]
-        this.requestUpdate()
+        this._updateSlottedInputValue(this.value)
       } else if (e.key === 'ArrowUp' && this.filteredOptions.length > 0) {
         if (this.selected > 0) {
           this.selected--
@@ -82,9 +101,10 @@ export class LitAutocomplete extends LitElement {
           this.selected = this.filteredOptions.length - 1
         }
         this.value = this.filteredOptions[this.selected]
-        this.requestUpdate()
+        this._updateSlottedInputValue(this.value)
       } else if ((e.key === 'Enter' || e.key === 'Tab') && this.selected >= 0) {
         this.value = this.filteredOptions[this.selected]
+        this._updateSlottedInputValue(this.value)
         this.filteredOptions = []
         this.requestUpdate()
       }
@@ -93,13 +113,7 @@ export class LitAutocomplete extends LitElement {
 
   render () {
     return html`
-      <input
-        type="text"
-        .value="${this.value}"
-        @input="${this.handleInput}"
-        @keydown="${this.handleKeydown}"
-        placeholder="Digite aqui..."
-      />
+      <slot name="input"></slot>
       ${this.filteredOptions.length > 0
         ? html`
             <lit-autocomplete-list
