@@ -9,7 +9,8 @@
   "module": "index.js",
   "exports": {
     ".": "./index.js",
-    "./lit-autocomplete.js": "./lit-autocomplete.js"
+    "./lit-autocomplete.js": "./lit-autocomplete.js",
+    "./lit-autocomplete-list.js": "./lit-autocomplete-list.js"
   },
   "scripts": {
     "analyze": "cem analyze --litelement",
