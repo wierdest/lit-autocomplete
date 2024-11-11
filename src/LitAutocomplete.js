@@ -2,16 +2,16 @@ import { html, css, LitElement } from 'lit'
 import '../lit-autocomplete-list'
 export class LitAutocomplete extends LitElement {
   static styles = css`
-      :host {
-        display: block;
-        padding: 25px;
-        color: var(--lit-autocomplete-text-color, #000);
-      }
-      ::slotted(input) {
-      width: 100%;
-      box-sizing: border-box;
-      } 
-    `
+    :host {
+      display: block;
+      padding: 25px;
+      color: var(--lit-autocomplete-text-color, #000);
+    }
+    ::slotted(input) {
+    width: 100%;
+    box-sizing: border-box;
+    } 
+  `
   static properties = {
     options: { type: Array },
     value: { type: String },
