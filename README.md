@@ -12,7 +12,7 @@ Elemento Lit para o comportamento de autocomplete. <br/>
 O componente recebe um string[], options, que usa para alimentar LitAutocompleteList. <br/>
 O componente recebe um input (slotted)
 O componente pode ser controlado pelas setas do teclado (acessibilidade) <br/>
-O componente visa 100% de testes unitários ** em andamento, desde o desacoplamento ainda não trabalhei na atualização dos testes ** <br/>
+O componente tem 100% de testes unitários <br/>
 
 ## Challenges
 O principal desafio foi o desacoplamento do elemento input do elemento lista <br>
