@@ -15,7 +15,8 @@ export class LitAutocomplete extends LitElement {
   static properties = {
     options: { type: Array },
     value: { type: String },
-    filteredOptions: { type: Array }
+    filteredOptions: { type: Array },
+    selected: { type: Number }
   }
 
   constructor () {
@@ -23,6 +24,7 @@ export class LitAutocomplete extends LitElement {
     this.value = ''
     this.options = []
     this.filteredOptions = []
+    this.selected = -1
     this._boundHandleInput = this.handleInput.bind(this)
     this._boundHandleKeydown = this.handleKeydown.bind(this)
   }
