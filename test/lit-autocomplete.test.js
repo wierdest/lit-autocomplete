@@ -8,7 +8,7 @@ describe('LitAutocomplete', () => {
   let el
   const mockAutocompleteOptions = ['lamb', 'calf', 'cub', 'kitten', 'puppy']
   beforeEach(async () => {
-    el = await fixture(html`<lit-autocomplete .options=${mockAutocompleteOptions}></lit-autocomplete>`)
+    el = await fixture(html`<lit-autocomplete .options=${mockAutocompleteOptions}><input slot="input" type="text" placeholder="Digite aqui..." /></lit-autocomplete>`)
   })
 
   it('exists', () => {
@@ -19,6 +19,19 @@ describe('LitAutocomplete', () => {
     const newOptions = ['jo', 'ken', 'po']
     const override = await fixture(html`<lit-autocomplete .options=${newOptions}></lit-autocomplete>`)
     expect(override.options).to.deep.equal(newOptions)
+  })
+
+  it('should have a slotted input field ', () => {
+    const slot = el.renderRoot.querySelector('slot[name="input"]')
+    expect(slot).to.exist
+  })
+
+  it('should update slotted input value using a method to do so', () => {
+    el._updateSlottedInputValue('novo valor')
+    const slot = el.renderRoot.querySelector('slot[name="input"]')
+    const input = slot.assignedElements()[0]
+    expect(input).to.exist
+    expect(input.value).to.equal('novo valor')
   })
 
   it('should handle input and return autocomplete options that match', () => {
@@ -35,44 +48,26 @@ describe('LitAutocomplete', () => {
     expect(el.filteredOptions).to.be.empty
   })
 
-  // it('should control the selected value using keyboard arrows and confirm selection via enter key', async () => {
-  //   expect(el.selected).to.equal(-1)
-  //   const mockInputEvent = { target: { value: 'a' } }
-  //   el.handleInput(mockInputEvent)
-  //   await el.updateComplete
-  //   expect(el.filteredOptions.length).to.equal(2)
-
-  //   let mockEvent = { key: 'ArrowDown', preventDefault: () => {} }
-  //   el.handleKeydown(mockEvent)
-  //   expect(el.selected).to.equal(0)
-  //   el.handleKeydown(mockEvent)
-  //   expect(el.selected).to.equal(1)
-  //   el.handleKeydown(mockEvent)
-  //   expect(el.selected).to.equal(0)
-  //   el.handleKeydown(mockEvent)
-  //   expect(el.selected).to.equal(1)
-  //   mockEvent = { key: 'ArrowUp', preventDefault: () => {} }
-  //   el.handleKeydown(mockEvent)
-  //   expect(el.selected).to.equal(0)
-  //   el.handleKeydown(mockEvent)
-  //   expect(el.selected).to.equal(el.filteredOptions.length - 1)
-  //   mockEvent = { key: 'Enter', preventDefault: () => {} }
-  //   el.handleKeydown(mockEvent)
-  //   expect(el.value).to.equal('calf')
-  // })
-
-  // it('autoCompleteItem should have a selected className if selected', async () => {
-  //   const mockInputEvent = { target: { value: 'i' } }
-  //   el.handleInput(mockInputEvent)
-
-  //   await el.updateComplete
-
-  //   el._findListElement()
-
-  //   expect(el.filteredOptions.length).to.equal(1)
-  //   const mockSelect = { key: 'ArrowDown' }
-  //   el.handleKeydown(mockSelect)
-  //   const autoCompleteItem = el.renderRoot.querySelector('.autoCompleteItem')
-  //   expect(autoCompleteItem).to.exist
-  // })
+  it('should control the selected value using keyboard arrows and confirm selection via enter key', async () => {
+    expect(el.selected).to.equal(-1)
+    const mockInputEvent = { target: { value: 'a' } }
+    el.handleInput(mockInputEvent)
+    let mockEvent = { key: 'ArrowDown', preventDefault: () => {} }
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(0)
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(1)
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(0)
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(1)
+    mockEvent = { key: 'ArrowUp', preventDefault: () => {} }
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(0)
+    el.handleKeydown(mockEvent)
+    expect(el.selected).to.equal(el.filteredOptions.length - 1)
+    mockEvent = { key: 'Enter', preventDefault: () => {} }
+    el.handleKeydown(mockEvent)
+    expect(el.value).to.equal('calf')
+  })
 })
