@@ -33,13 +33,20 @@
     "extends": [
       "@open-wc",
       "standard"
-    ],
-    "globals": {
-      "KeyboardEvent": "readonly",
-      "describe": "readonly",
-      "it": "readonly",
-      "beforeEach": "readonly"
-    }
+    ]
+  },
+  "standard": {
+    "globals": [
+      "customElements",
+      "WebFont",
+      "HTMLElement",
+      "describe",
+      "beforeEach",
+      "it",
+      "expect",
+      "before",
+      "after"
+    ]
   },
   "customElements": "custom-elements.json"
 }
